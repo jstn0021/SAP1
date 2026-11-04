@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP-1 Computer Simulator</title>
+    <link rel="stylesheet" href="sap.css">
+</head>
+<body>
+
+<main class="computer">
+
+    <header class="brand">
+        <div class="logo">SAP-1</div>
+        <p>COMPUTER ARCHITECTURE<br>AND ORGANIZATION</p>
+    </header>
+
+    <!-- KEYPAD -->
+    <section class="keypad panel">
+
+        <div class="instruction-keys">
+            <button data-instruction="LDA">LDA</button>
+            <button data-instruction="ADD">ADD</button>
+            <button data-instruction="SUB">SUB</button>
+            <button class="pink" data-action="up">UP</button>
+
+            <button data-instruction="OUT">OUT</button>
+            <button data-instruction="HLT">HLT</button>
+            <button data-action="ram">RAM</button>
+            <button class="pink" data-action="down">DN</button>
+        </div>
+
+        <div class="hex-keys">
+            <button data-hex="0">0</button>
+            <button data-hex="1">1</button>
+            <button data-hex="2">2</button>
+            <button data-hex="3">3</button>
+            <button data-hex="4">4</button>
+            <button data-hex="5">5</button>
+            <button data-hex="6">6</button>
+            <button data-hex="7">7</button>
+            <button data-hex="8">8</button>
+            <button data-hex="9">9</button>
+            <button data-hex="A">A</button>
+            <button data-hex="B">B</button>
+            <button data-hex="C">C</button>
+            <button data-hex="D">D</button>
+            <button data-hex="E">E</button>
+            <button data-hex="F">F</button>
+        </div>
+
+        <div class="utility-keys">
+            <button class="orange" data-action="step">STEP</button>
+            <button class="orange" data-speed="500">2 HZ</button>
+            <button class="orange" data-speed="50">20 HZ</button>
+            <button class="orange" data-speed="0">MAX</button>
+
+            <button class="green" data-program="1">PROG 1</button>
+            <button class="green" data-program="2">PROG 2</button>
+            <button class="green" data-program="3">PROG 3</button>
+            <button class="green" data-program="4">PROG 4</button>
+
+            <button class="red" data-action="clear">CLEAR ASM</button>
+            <button class="red" data-action="delete">DEL LINE</button>
+            <button data-action="reset">RESET</button>
+            <button class="green" data-action="save">SAVE PROG</button>
+        </div>
+
+        <p class="keypad-help">
+            Select an input field before using the hexadecimal keys.
+        </p>
+    </section>
+
+    <!-- ASSEMBLY -->
+    <section class="table-panel panel">
+        <h2>ASM</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr><th>ADDRESS</th><th>INSTRUCTION</th></tr>
+                </thead>
+                <tbody id="asm-table"></tbody>
+            </table>
+        </div>
+        <div class="notes">
+            <b>LDA</b> - Load RAM into Register A<br>
+            <b>ADD</b> - Add value from RAM to A<br>
+            <b>SUB</b> - Subtract value from A<br>
+            <b>OUT</b> - Display Register A<br>
+            <b>HLT</b> - Stop program
+        </div>
+    </section>
+
+    <!-- MACHINE CODE -->
+    <section class="table-panel panel">
+        <h2>M. CODE</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr><th>ADDRESS</th><th>8-BIT CODE</th></tr>
+                </thead>
+                <tbody id="code-table"></tbody>
+            </table>
+        </div>
+        <div class="notes">
+            <b>Opcode</b> - Upper 4 bits<br>
+            <b>Operand</b> - Lower 4 bits<br><br>
+            Enter machine code in binary or hexadecimal.
+        </div>
+    </section>
+
+    <!-- RAM -->
+    <section class="table-panel panel ram-panel">
+        <h2>RAM · 16 × 8</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr><th>ADDRESS</th><th>DATA (8-BIT)</th></tr>
+                </thead>
+                <tbody id="ram-table"></tbody>
+            </table>
+        </div>
+        <div class="notes">
+            <b>Address 0–F</b><br>
+            Each address stores an 8-bit value.<br><br>
+            Program instructions and data are stored in the same memory.
+        </div>
+    </section>
+
+    <!-- MONITOR -->
+    <section class="monitor panel">
+
+        <div class="display-label">OUTPUT REGISTER</div>
+        <div class="digital-display">
+            <span id="display-2">0</span>
+            <span id="display-1">0</span>
+            <span id="display-0">0</span>
+        </div>
+
+        <div class="status-panel">
+            <span>STATUS:</span>
+            <strong id="status">READY</strong>
+        </div>
+
+        <div class="register-list">
+
+            <div class="signal" data-register="bus">
+                <span>W-BUS</span>
+                <div class="bits" id="bus-bits"></div>
+                <b id="bus-value">00</b>
+            </div>
+
+            <div class="signal" data-register="pc">
+                <span>PROGRAM COUNTER</span>
+                <div class="bits" id="pc-bits"></div>
+                <b id="pc-value">0</b>
+            </div>
+
+            <div class="signal" data-register="a">
+                <span>REGISTER A</span>
+                <div class="bits" id="a-bits"></div>
+                <b id="a-value">00</b>
+            </div>
+
+            <div class="signal" data-register="b">
+                <span>REGISTER B</span>
+                <div class="bits" id="b-bits"></div>
+                <b id="b-value">00</b>
+            </div>
+
+            <div class="signal" data-register="alu">
+                <span>ALU / SUM</span>
+                <div class="bits" id="alu-bits"></div>
+                <b id="alu-value">00</b>
+            </div>
+
+            <div class="signal" data-register="mar">
+                <span>MAR</span>
+                <div class="bits" id="mar-bits"></div>
+                <b id="mar-value">0</b>
+            </div>
+
+            <div class="signal" data-register="ir">
+                <span>INSTRUCTION REGISTER</span>
+                <div class="bits" id="ir-bits"></div>
+                <b id="ir-value">00</b>
+            </div>
+
+            <div class="signal" data-register="control">
+                <span>TIME / CONTROL</span>
+                <b id="control-value">T0</b>
+            </div>
+
+        </div>
+
+        <div class="execution-info">
+            <span>Current instruction:</span>
+            <strong id="current-instruction">---</strong>
+        </div>
+
+        <div class="transport">
+            <button data-action="step">STEP</button>
+            <button data-action="run">RUN</button>
+            <button class="stop" data-action="stop">STOP</button>
+            <button data-action="reset">RESET</button>
+        </div>
+
+    </section>
+
+</main>
+
+<script src="sap.js"></script>
+</body>
+</html>

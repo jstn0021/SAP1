@@ -1,0 +1,484 @@
+
+:root {
+    --case: #073b40;
+    --panel: #bfc0bd;
+    --light: #e2e1dc;
+    --blue: #a9dce4;
+    --peach: #efc7aa;
+    --pink: #eaa2a1;
+    --orange: #f6a04f;
+    --green: #b4d68d;
+    --red: #ed7775;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 18px;
+    background: #d8d8d3;
+    font-family: Arial, sans-serif;
+    color: #171b1b;
+}
+
+.computer {
+    width: 100%;
+    max-width: 1500px;
+    min-height: 700px;
+    margin: auto;
+    padding: 15px;
+    display: grid;
+    grid-template-columns:
+        minmax(145px, .78fr)
+        repeat(3, minmax(190px, 1fr))
+        minmax(245px, 1.22fr);
+    grid-template-rows: auto 1fr;
+    align-items: stretch;
+
+    /* Reduced spacing between all main columns */
+    column-gap: 5px;
+    row-gap: 12px;
+
+    background: var(--case);
+    border: 5px solid #222d2c;
+    box-shadow: 0 8px 22px #0003;
+}
+
+.panel {
+    min-width: 0;
+    padding: 8px;
+    background: var(--panel);
+    border: 3px solid #777b7b;
+}
+
+.brand {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    color: white;
+}
+
+.logo {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    color: #111;
+    background: #f0efeb;
+    border: 4px solid #737775;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.brand p {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.keypad {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-self: stretch;
+}
+
+.instruction-keys,
+.hex-keys,
+.utility-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+}
+
+button {
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+button:active {
+    transform: translateY(1px);
+    filter: brightness(.92);
+}
+
+.keypad button {
+    min-width: 0;
+    min-height: 43px;
+    border: 1px solid #626765;
+    background: var(--peach);
+    font-weight: bold;
+}
+
+.keypad .pink {
+    background: var(--pink);
+}
+
+.hex-keys button {
+    min-height: 48px;
+    background: var(--blue);
+    font-size: 20px;
+}
+
+.utility-keys button {
+    min-height: 45px;
+    padding: 3px;
+    font-size: 10px;
+}
+
+.orange { background: var(--orange) !important; }
+.green { background: var(--green) !important; }
+.red { background: var(--red) !important; }
+
+.keypad-help {
+    margin: 5px 2px 0;
+    font-size: 9px;
+    line-height: 1.4;
+    color: #343a38;
+}
+
+/* TABLE PANELS */
+.table-panel {
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 650px;
+    align-self: stretch;
+    margin: 0;
+}
+
+/* Bring ASM, M.CODE, and RAM closer together */
+.table-panel + .table-panel {
+    margin-left: -5px;
+}
+
+.table-panel h2 {
+    margin: 0 0 7px;
+    padding: 8px;
+    text-align: center;
+    background: var(--light);
+    border: 2px solid #777b78;
+    font-size: 16px;
+}
+
+.table-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    background: #a6a7a4;
+    border: 1px solid #777a77;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+th, td {
+    padding: 5px;
+    border-bottom: 1px solid #8a8d89;
+    text-align: left;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #c9cac6;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+}
+
+td:first-child {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+td input {
+    width: 100%;
+    min-width: 0;
+    padding: 4px 2px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+td input:focus {
+    background: white;
+    border-bottom: 1px solid #174e52;
+}
+
+td input.invalid {
+    background: #ffd2d0;
+    outline: 1px solid #b3261e;
+}
+
+.notes {
+    min-height: 112px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 2px solid #858985;
+    border-radius: 0 18px 0 0;
+    background: #e0dfd9;
+    font: 11px/1.6 monospace;
+}
+
+.monitor {
+    grid-column: 5;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.display-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.digital-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding: 8px;
+    background: #d0d0cb;
+    border: 3px solid #737875;
+}
+
+.digital-display span {
+    display: grid;
+    min-height: 75px;
+    place-items: center;
+    background: #090d0e;
+    color: #f10e16;
+    text-shadow: 0 0 8px red;
+    font: italic bold 55px monospace;
+}
+
+.status-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    border: 2px solid #777b78;
+    background: #e1e0db;
+    font-size: 11px;
+}
+
+#status {
+    color: #174e52;
+}
+
+#status.running {
+    color: #176b2c;
+}
+
+#status.halted,
+#status.error {
+    color: #bd2828;
+}
+
+.register-list {
+    display: grid;
+    gap: 6px;
+}
+
+.signal {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 29px;
+    padding: 5px;
+    border: 2px solid #777b78;
+    background: #e1e0db;
+}
+
+.signal span {
+    flex: 1;
+    min-width: 0;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.signal b {
+    min-width: 22px;
+    text-align: right;
+    font: bold 11px monospace;
+}
+
+.bits {
+    display: flex;
+    gap: 2px;
+}
+
+.bits i {
+    width: 7px;
+    height: 10px;
+    border-radius: 2px;
+    background: #252a29;
+}
+
+.bits i.lit {
+    background: red;
+    box-shadow: 0 0 5px red;
+}
+
+.signal.active {
+    outline: 2px solid #e28c35;
+    background: #fff0d5;
+}
+
+.execution-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 8px;
+    background: #e0dfd9;
+    border: 2px solid #858985;
+    font-size: 10px;
+}
+
+.execution-info strong {
+    font-family: monospace;
+}
+
+.transport {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-top: auto;
+}
+
+.transport button {
+    min-width: 0;
+    min-height: 48px;
+    padding: 4px;
+    border: 3px solid #777b78;
+    background: #f6e6ac;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.transport .stop {
+    background: var(--red);
+}
+
+/* Active memory row */
+tr.active-row {
+    background: #f8e3a8;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1120px) {
+    .computer {
+        grid-template-columns: 150px repeat(2, minmax(190px, 1fr));
+        grid-template-rows: auto auto auto;
+        column-gap: 8px;
+    }
+
+    .brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .keypad {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .table-panel {
+        grid-row: auto;
+        margin-left: 0;
+    }
+
+    .table-panel + .table-panel {
+        margin-left: 0;
+    }
+
+    .monitor {
+        grid-column: 2 / 4;
+        grid-row: auto;
+    }
+
+    .monitor .register-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 7px;
+    }
+
+    .computer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
+        padding: 8px;
+    }
+
+    .brand {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .brand p {
+        display: none;
+    }
+
+    .keypad {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .table-panel {
+        grid-column: auto;
+        grid-row: auto;
+        margin-left: 0;
+    }
+
+    .table-panel + .table-panel {
+        margin-left: 0;
+    }
+
+    .ram-panel,
+    .monitor {
+        grid-column: 1 / -1;
+    }
+
+    .monitor {
+        grid-row: auto;
+    }
+
+    .monitor .register-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 430px) {
+    .computer {
+        grid-template-columns: 1fr;
+    }
+
+    .brand,
+    .keypad,
+    .table-panel,
+    .ram-panel,
+    .monitor {
+        grid-column: 1;
+    }
+}
