@@ -1,12 +1,12 @@
-/**
- * SAP-1 Simulator – Core Logic
- * FIXED VERSION: Search "FIX 1" through "FIX 4".
+
+/*
+ * SAP-1 Computer Simulator
+ * Core CPU Logic + Frontend Integration
  *
- * Fetch-decode-execute T-states:
- * T1: PC -> MAR
- * T2: PC = PC + 1
- * T3: RAM -> IR
- * T4-T6: Execute instruction
+ * FIX 1-4: CPU and assembler corrections
+ * CHANGED 1: STEP executes one complete instruction
+ * CHANGED 2: Three-digit hexadecimal output without H
+ * FIX 5: Match the updated HTML output elements
  */
 
 const OPCODES = {
@@ -27,7 +27,6 @@ const MNEMONICS = Object.fromEntries(
 // ============================================================
 
 class SAP1 {
-
   constructor(onChange = () => {}) {
     this.onChange = onChange;
     this.program = new Array(16).fill(0);
@@ -41,7 +40,7 @@ class SAP1 {
     this.mar = 0;
     this.ir = 0;
 
-    // FIX 4: Prevent showing LDA before the first fetch.
+    // FIX 4: Do not display LDA before fetching an instruction.
     this.instructionFetched = false;
 
     this.a = 0;
@@ -67,7 +66,6 @@ class SAP1 {
   }
 
   loadMemory(bytes) {
-
     // FIX 3: Validate memory values.
     if (
       !Array.isArray(bytes) ||
@@ -113,7 +111,6 @@ class SAP1 {
     const operand = this.ir & 0x0f;
 
     switch (this.t) {
-
       case 1:
         // T1: PC -> MAR
         this._drive(
@@ -143,8 +140,6 @@ class SAP1 {
 
         this.lastMemAddr = this.mar;
         this.ir = this.bus.value;
-
-        // FIX 4: Instruction is now fetched.
         this.instructionFetched = true;
         break;
 
@@ -177,22 +172,16 @@ class SAP1 {
 
     do {
       this.clockPulse();
-    } while (
-      !this.halted &&
-      this.t !== 6
-    );
+    } while (!this.halted && this.t !== 6);
 
     return true;
   }
 
   _executeT4(opcode, operand) {
-
     switch (opcode) {
-
       case OPCODES.LDA:
       case OPCODES.ADD:
       case OPCODES.SUB:
-
         this._drive(
           "IR",
           operand,
@@ -204,7 +193,6 @@ class SAP1 {
         break;
 
       case OPCODES.OUT:
-
         this._drive(
           "A",
           this.a,
@@ -221,16 +209,14 @@ class SAP1 {
         break;
 
       default:
+        // Undefined opcode: NOP
         break;
     }
   }
 
   _executeT5(opcode) {
-
     switch (opcode) {
-
       case OPCODES.LDA:
-
         this._drive(
           "RAM",
           this.ram[this.mar],
@@ -244,7 +230,6 @@ class SAP1 {
 
       case OPCODES.ADD:
       case OPCODES.SUB:
-
         this._drive(
           "RAM",
           this.ram[this.mar],
@@ -259,9 +244,7 @@ class SAP1 {
   }
 
   _executeT6(opcode) {
-
     if (opcode === OPCODES.ADD) {
-
       const sum = this.a + this.b;
 
       this.carry = sum > 0xff;
@@ -276,7 +259,7 @@ class SAP1 {
       this.a = this.bus.value;
 
     } else if (opcode === OPCODES.SUB) {
-
+      // Two's complement subtraction.
       const diff =
         this.a + ((~this.b) & 0xff) + 1;
 
@@ -294,7 +277,6 @@ class SAP1 {
   }
 
   _drive(source, value, dest, signals) {
-
     this.bus = {
       value: value & 0xff,
       source,
@@ -305,7 +287,6 @@ class SAP1 {
   }
 
   getSnapshot() {
-
     return {
       pc: this.pc,
       mar: this.mar,
@@ -314,7 +295,6 @@ class SAP1 {
       opcode: this.ir >> 4,
       operand: this.ir & 0x0f,
 
-      // FIX 4: Correct initial mnemonic.
       mnemonic: this.instructionFetched
         ? (MNEMONICS[this.ir >> 4] ?? "???")
         : "---",
@@ -349,7 +329,6 @@ class SAP1 {
 // ============================================================
 
 class Runner {
-
   constructor(cpu, granularity = "clock") {
     this.cpu = cpu;
     this.granularity = granularity;
@@ -376,7 +355,6 @@ class Runner {
     if (this.running || this.cpu.halted) return;
 
     this.timer = setInterval(() => {
-
       if (
         this.cpu.halted ||
         ++this.ticks > this.maxTicks
@@ -391,7 +369,6 @@ class Runner {
       if (this.cpu.halted) {
         this.stop();
       }
-
     }, this.delayMs);
   }
 
@@ -404,11 +381,10 @@ class Runner {
 
 
 // ============================================================
-// PART 3: ASSEMBLER AND MEMORY
+// PART 3: ASSEMBLY AND MEMORY HELPERS
 // ============================================================
 
 function parseHexByte(text) {
-
   const clean = String(text)
     .trim()
     .replace(/^0x/i, "")
@@ -422,8 +398,7 @@ function parseHexByte(text) {
 }
 
 function assembleLine(line) {
-
-  // FIX 2: Capture unexpected extra operands.
+  // FIX 2: Reject unexpected extra operands.
   const [mn, arg, ...extras] = line
     .trim()
     .toUpperCase()
@@ -435,7 +410,6 @@ function assembleLine(line) {
     };
   }
 
-  // FIX 2: Reject extra operands.
   if (
     extras.length ||
     (
@@ -468,33 +442,30 @@ function assembleLine(line) {
 }
 
 function buildMemory(instructions, data = {}) {
-
   const memory = new Array(16).fill(0);
   const errors = [];
 
-  // FIX 1: Track instruction addresses.
+  // FIX 1: Prevent instruction/data overlap.
   const instructionAddresses = new Set();
 
   instructions.forEach((line, i) => {
-
     if (!line.trim()) return;
 
     if (i > 15) {
       return errors.push("Program exceeds 16 bytes");
     }
 
-    const r = assembleLine(line);
+    const result = assembleLine(line);
 
-    if (r.error) {
-      errors.push(`Line ${i}: ${r.error}`);
+    if (result.error) {
+      errors.push(`Line ${i}: ${result.error}`);
     } else {
-      memory[i] = r.byte;
+      memory[i] = result.byte;
       instructionAddresses.add(i);
     }
   });
 
   for (const [addrTxt, valTxt] of Object.entries(data)) {
-
     const addr = parseHexByte(addrTxt);
     const val = parseHexByte(valTxt);
 
@@ -506,7 +477,6 @@ function buildMemory(instructions, data = {}) {
         `Bad value "${valTxt}" at ${addrTxt}`
       );
 
-    // FIX 1: Prevent instruction/data overlap.
     } else if (instructionAddresses.has(addr)) {
       errors.push(
         `Memory overlap at address ${addrTxt}: instruction and data`
@@ -520,24 +490,15 @@ function buildMemory(instructions, data = {}) {
   return { memory, errors };
 }
 
-
-// ============================================================
-// PART 4: FORMAT HELPERS
-// ============================================================
-
 const toBin = (n, bits = 8) =>
-  (n >>> 0)
-    .toString(2)
-    .padStart(bits, "0");
+  (n >>> 0).toString(2).padStart(bits, "0");
 
 const toHex = (n, digits = 2) =>
-  n.toString(16)
-    .toUpperCase()
-    .padStart(digits, "0");
+  n.toString(16).toUpperCase().padStart(digits, "0");
 
 
 // ============================================================
-// PART 5: NODE EXPORTS
+// PART 4: NODE.JS EXPORTS
 // ============================================================
 
 if (typeof module !== "undefined") {
@@ -555,11 +516,10 @@ if (typeof module !== "undefined") {
 
 
 // ============================================================
-// ADDED UI 1: HTML INTEGRATION
+// PART 5: FRONTEND INTEGRATION
 // ============================================================
 
 if (typeof document !== "undefined") {
-
   document.addEventListener("DOMContentLoaded", () => {
 
     const byId = id => document.getElementById(id);
@@ -578,13 +538,8 @@ if (typeof document !== "undefined") {
     let aluValue = 0;
     let uiError = false;
 
-
-    // ========================================================
-    // CHANGED UI 1: READ EXISTING HTML TABLES
-    // ========================================================
-
+    // ADDED UI 1: Read existing HTML table inputs.
     for (let address = 0; address < 16; address++) {
-
       const asmText =
         cell("Asm", address)?.value.trim().toUpperCase() || "";
 
@@ -598,18 +553,16 @@ if (typeof document !== "undefined") {
 
       const parsed = parseHexByte(raw);
 
-      bytes[address] =
-        parsed === null ? 0 : parsed;
+      bytes[address] = parsed === null ? 0 : parsed;
     }
 
     const cpu = new SAP1();
     const runner = new Runner(cpu, "clock");
-
     let lastInstructionCount = 0;
 
 
     // ========================================================
-    // ADDED UI 2: FORMATTING AND VALIDATION
+    // ADDED UI 2: FORMATTING AND INPUT VALIDATION
     // ========================================================
 
     const binary8 = value =>
@@ -625,7 +578,6 @@ if (typeof document !== "undefined") {
       bytes[index] & 0xff;
 
     const instructionAt = value => {
-
       const opcode = value >> 4;
       const mnemonic = MNEMONICS[opcode];
 
@@ -639,7 +591,6 @@ if (typeof document !== "undefined") {
     };
 
     const parseCode = text => {
-
       const compact = text
         .trim()
         .replace(/\s+/g, "");
@@ -652,7 +603,6 @@ if (typeof document !== "undefined") {
     };
 
     const parseAssemblyOrData = text => {
-
       const normalized = text
         .trim()
         .toUpperCase();
@@ -665,9 +615,7 @@ if (typeof document !== "undefined") {
         };
       }
 
-      if (
-        /^(LDA|ADD|SUB|OUT|HLT)(?:\s|$)/.test(normalized)
-      ) {
+      if (/^(LDA|ADD|SUB|OUT|HLT)(?:\s|$)/.test(normalized)) {
         return {
           ...assembleLine(normalized),
           kind: "instruction"
@@ -681,20 +629,19 @@ if (typeof document !== "undefined") {
         : { byte: value, kind: "data" };
     };
 
+    function setStatus(message, className = "") {
+      const element = byId("status");
+      if (!element) return;
 
-    // ========================================================
-    // ADDED UI 2: ERROR PANEL
-    // ========================================================
+      element.textContent = message;
+      element.className = className;
+    }
 
     const showError = message => {
-
       uiError = true;
 
       const errorBox = byId("error-box");
-
-      if (errorBox) {
-        errorBox.hidden = false;
-      }
+      if (errorBox) errorBox.hidden = false;
 
       if (byId("error-title")) {
         byId("error-title").textContent = "Invalid Input";
@@ -713,7 +660,6 @@ if (typeof document !== "undefined") {
     };
 
     const clearError = () => {
-
       uiError = false;
 
       if (byId("error-box")) {
@@ -732,23 +678,12 @@ if (typeof document !== "undefined") {
         );
     };
 
-    function setStatus(message, className = "") {
-
-      const element = byId("status");
-
-      if (!element) return;
-
-      element.textContent = message;
-      element.className = className;
-    }
-
 
     // ========================================================
     // ADDED UI 3: SYNCHRONIZE ASM, MACHINE CODE, AND RAM
     // ========================================================
 
     const refreshRow = (address, source = "") => {
-
       const ramInput = cell("Ram", address);
       const machineInput = cell("Mc", address);
       const asmInput = cell("Asm", address);
@@ -763,7 +698,6 @@ if (typeof document !== "undefined") {
       }
 
       if (asmInput && source !== "Asm") {
-
         const decoded =
           rowKinds[address] === "instruction"
             ? instructionAt(byteAt(address))
@@ -780,18 +714,12 @@ if (typeof document !== "undefined") {
     };
 
     const refreshAllRows = () => {
-
-      for (
-        let address = 0;
-        address < 16;
-        address++
-      ) {
+      for (let address = 0; address < 16; address++) {
         refreshRow(address);
       }
     };
 
     const loadCpuFromEditor = () => {
-
       runner.stop();
       cpu.loadMemory(bytes);
 
@@ -800,21 +728,17 @@ if (typeof document !== "undefined") {
 
       clearExecutionLog();
       clearError();
-
       setStatus("READY");
     };
 
     const editRow = (input, source, address) => {
-
       const text = input.value.trim();
       let parsed;
 
       if (source === "Asm") {
-
         parsed = parseAssemblyOrData(text);
 
       } else if (source === "Mc") {
-
         const value = parseCode(text);
 
         parsed = value === null
@@ -825,7 +749,6 @@ if (typeof document !== "undefined") {
           : { byte: value };
 
       } else {
-
         const value = parseHexByte(text);
 
         parsed = value === null
@@ -837,7 +760,6 @@ if (typeof document !== "undefined") {
       }
 
       if (parsed.error) {
-
         input.classList.add("invalid");
 
         showError(
@@ -854,28 +776,58 @@ if (typeof document !== "undefined") {
       }
 
       refreshRow(address, source);
-
       input.classList.remove("invalid");
-
       loadCpuFromEditor();
     };
 
 
     // ========================================================
-    // ADDED UI 4: REGISTER LED DISPLAY
+    // FIX 5: MATCH THE UPDATED HTML HEX OUTPUT
+    // ========================================================
+
+    const updateHexOutput = value => {
+      // Convert the output to three hexadecimal digits.
+      const display = toHex(value & 0xff, 3);
+
+      // Updated HTML uses .hex-digit instead of display-2,
+      // display-1, and display-0.
+      const digits = document.querySelectorAll(
+        ".hex-display .hex-digit"
+      );
+
+      if (digits.length !== 3) {
+        showError(
+          "Hex output requires exactly three digit elements"
+        );
+        return;
+      }
+
+      // Update the three digits in their displayed order.
+      digits.forEach((element, index) => {
+        element.textContent = display[index];
+      });
+
+      // Hide the H suffix to retain the requested format.
+      document
+        .querySelectorAll(".hex-display .hex-suffix")
+        .forEach(suffix => {
+          suffix.style.display = "none";
+        });
+    };
+
+
+    // ========================================================
+    // ADDED UI 4: REGISTER LED INDICATORS
     // ========================================================
 
     const renderBits = (id, value, count = 8) => {
-
       const container = byId(id);
-
       if (!container) return;
 
       const digits = toBin(value, count)
         .slice(-count);
 
       if (container.children.length !== count) {
-
         container.replaceChildren(
           ...Array.from(
             { length: count },
@@ -884,38 +836,32 @@ if (typeof document !== "undefined") {
         );
       }
 
-      [...container.children].forEach(
-        (bit, index) => {
-          bit.classList.toggle(
-            "lit",
-            digits[index] === "1"
-          );
-        }
-      );
+      [...container.children].forEach((bit, index) => {
+        bit.classList.toggle(
+          "lit",
+          digits[index] === "1"
+        );
+      });
     };
 
     const setText = (id, value) => {
+      const element = byId(id);
 
-      if (byId(id)) {
-        byId(id).textContent = value;
+      if (element) {
+        element.textContent = value;
       }
     };
 
     const highlightRows = address => {
-
-      for (
-        const name of [
-          "asm-table",
-          "code-table",
-          "ram-table"
-        ]
-      ) {
-
+      for (const name of [
+        "asm-table",
+        "code-table",
+        "ram-table"
+      ]) {
         const rows =
           byId(name)?.querySelectorAll("tr") || [];
 
         rows.forEach((row, index) => {
-
           row.classList.toggle(
             "active-row",
             index === address
@@ -925,11 +871,9 @@ if (typeof document !== "undefined") {
     };
 
     const highlightRegister = name => {
-
       document
         .querySelectorAll(".signal[data-register]")
         .forEach(element => {
-
           element.classList.toggle(
             "active",
             element.dataset.register ===
@@ -944,41 +888,23 @@ if (typeof document !== "undefined") {
     // ========================================================
 
     const renderWireNodes = snapshot => {
-
       const values = {
-
         pc: toBin(snapshot.pc, 4).slice(-4),
-
         mar: toBin(snapshot.mar, 4).slice(-4),
-
-        ram: binary8(
-          snapshot.ram[snapshot.mar] ?? 0
-        ),
-
+        ram: binary8(snapshot.ram[snapshot.mar] ?? 0),
         ir: binary8(snapshot.ir),
-
         a: binary8(snapshot.a),
-
         b: binary8(snapshot.b),
-
         alu: binary8(aluValue),
-
         out: binary8(snapshot.out)
       };
 
-      for (
-        const [name, value] of Object.entries(values)
-      ) {
-
+      for (const [name, value] of Object.entries(values)) {
         const node = byId(`wire-${name}`);
-
         if (!node) continue;
 
         const small = node.querySelector("small");
-
-        if (small) {
-          small.textContent = value;
-        }
+        if (small) small.textContent = value;
 
         const activeSource =
           snapshot.bus.source?.toLowerCase() === name;
@@ -1003,8 +929,7 @@ if (typeof document !== "undefined") {
             : "";
       }
 
-      const active =
-        snapshot.bus.value !== null;
+      const active = snapshot.bus.value !== null;
 
       setText(
         "bus-source",
@@ -1033,20 +958,16 @@ if (typeof document !== "undefined") {
       const backbone = byId("bus-backbone");
 
       if (backbone) {
-        backbone.classList.toggle(
-          "active",
-          active
-        );
+        backbone.classList.toggle("active", active);
       }
     };
 
 
     // ========================================================
-    // ADDED UI 5: RENDER CPU SNAPSHOT
+    // ADDED UI 5: UPDATE CPU MONITOR
     // ========================================================
 
     const renderSnapshot = snapshot => {
-
       if (snapshot.bus.source === "ALU") {
         aluValue = snapshot.bus.value;
       }
@@ -1063,7 +984,6 @@ if (typeof document !== "undefined") {
       ];
 
       reg.forEach(([name, value, width]) => {
-
         setText(
           `${name}-value`,
           toHex(value, width === 4 ? 1 : 2)
@@ -1124,14 +1044,8 @@ if (typeof document !== "undefined") {
         snapshot.halted ? "YES" : "NO"
       );
 
-      // Decimal output, three digits.
-      const display = String(snapshot.out)
-        .padStart(3, "0")
-        .slice(-3);
-
-      setText("display-2", display[0]);
-      setText("display-1", display[1]);
-      setText("display-0", display[2]);
+      // FIX 5: Update the three hexadecimal output digits.
+      updateHexOutput(snapshot.out);
 
       highlightRows(snapshot.activeAddress);
 
@@ -1144,33 +1058,20 @@ if (typeof document !== "undefined") {
       renderWireNodes(snapshot);
 
       if (snapshot.halted) {
-
         setStatus("HALTED", "halted");
 
       } else if (runner.running) {
-
         setStatus("RUNNING", "running");
 
-      } else if (
-        !uiError &&
-        snapshot.tState !== 0
-      ) {
-
+      } else if (!uiError && snapshot.tState !== 0) {
         setStatus("PAUSED");
 
       } else if (!uiError) {
-
         setStatus("READY");
       }
 
-      // ADDED UI 6: Log completed instructions.
-      if (
-        snapshot.cycleCount > lastInstructionCount
-      ) {
-
-        lastInstructionCount =
-          snapshot.cycleCount;
-
+      if (snapshot.cycleCount > lastInstructionCount) {
+        lastInstructionCount = snapshot.cycleCount;
         appendExecutionLog(snapshot);
       }
     };
@@ -1181,7 +1082,6 @@ if (typeof document !== "undefined") {
     // ========================================================
 
     function clearExecutionLog() {
-
       logCount = 0;
 
       if (byId("execution-log")) {
@@ -1194,9 +1094,7 @@ if (typeof document !== "undefined") {
     }
 
     function appendExecutionLog(snapshot) {
-
       const list = byId("execution-log");
-
       if (!list) return;
 
       const item = document.createElement("li");
@@ -1220,21 +1118,12 @@ if (typeof document !== "undefined") {
 
 
     // ========================================================
-    // ADDED UI 7: CONNECT INPUT FIELDS
+    // ADDED UI 7: CONNECT TABLE INPUTS
     // ========================================================
 
-    for (
-      let address = 0;
-      address < 16;
-      address++
-    ) {
-
-      for (
-        const source of ["Asm", "Mc", "Ram"]
-      ) {
-
+    for (let address = 0; address < 16; address++) {
+      for (const source of ["Asm", "Mc", "Ram"]) {
         const input = cell(source, address);
-
         if (!input) continue;
 
         input.addEventListener("focus", () => {
@@ -1253,7 +1142,6 @@ if (typeof document !== "undefined") {
     // ========================================================
 
     const presets = {
-
       1: {
         instructions: [
           "LDA 9H",
@@ -1312,26 +1200,17 @@ if (typeof document !== "undefined") {
     };
 
     const preset = number => {
-
       bytes.fill(0);
       rowKinds.fill("data");
 
       const program = presets[number];
 
-      program.instructions.forEach(
-        (line, address) => {
+      program.instructions.forEach((line, address) => {
+        bytes[address] = assembleLine(line).byte;
+        rowKinds[address] = "instruction";
+      });
 
-          bytes[address] =
-            assembleLine(line).byte;
-
-          rowKinds[address] = "instruction";
-        }
-      );
-
-      for (
-        const [address, value]
-        of Object.entries(program.data)
-      ) {
+      for (const [address, value] of Object.entries(program.data)) {
         bytes[Number(address)] = value;
       }
 
@@ -1341,11 +1220,10 @@ if (typeof document !== "undefined") {
 
 
     // ========================================================
-    // ADDED UI 8: RESET FUNCTION
+    // ADDED UI 8: RESET AND BUTTON ACTIONS
     // ========================================================
 
     const reset = () => {
-
       runner.stop();
       cpu.reset();
 
@@ -1354,19 +1232,11 @@ if (typeof document !== "undefined") {
 
       clearExecutionLog();
       clearError();
-
       setStatus("READY");
     };
 
-
-    // ========================================================
-    // ADDED UI 8: BUTTON ACTIONS
-    // ========================================================
-
     const handleAction = action => {
-
       if (action === "run") {
-
         if (uiError) return;
 
         runner.start();
@@ -1377,7 +1247,6 @@ if (typeof document !== "undefined") {
         );
 
       } else if (action === "stop") {
-
         runner.stop();
 
         if (!cpu.halted) {
@@ -1385,49 +1254,37 @@ if (typeof document !== "undefined") {
         }
 
       } else if (action === "step") {
-
         if (uiError) return;
 
         runner.stop();
-        cpu.clockPulse();
+
+        // CHANGED 1: One STEP click = one instruction.
+        cpu.stepInstruction();
 
       } else if (action === "reset") {
-
         reset();
 
-      } else if (
-        action === "up" ||
-        action === "down"
-      ) {
-
+      } else if (action === "up" || action === "down") {
         const inputs = [
           ...document.querySelectorAll(
-            "#asm-table input, " +
-            "#code-table input, " +
-            "#ram-table input"
+            "#asm-table input, #code-table input, #ram-table input"
           )
         ];
 
-        let index =
-          inputs.indexOf(selectedInput);
+        let index = inputs.indexOf(selectedInput);
 
-        index =
-          (
-            index +
-            (action === "up" ? -1 : 1) +
-            inputs.length
-          ) % inputs.length;
+        index = (
+          index +
+          (action === "up" ? -1 : 1) +
+          inputs.length
+        ) % inputs.length;
 
         selectedInput = inputs[index];
         selectedInput?.focus();
 
       } else if (action === "ram") {
-
         const index = selectedInput
-          ? parseInt(
-              selectedInput.id.split("_")[1],
-              16
-            )
+          ? parseInt(selectedInput.id.split("_")[1], 16)
           : 0;
 
         selectedInput = cell(
@@ -1438,87 +1295,58 @@ if (typeof document !== "undefined") {
         selectedInput?.focus();
 
       } else if (action === "clear") {
-
         bytes.fill(0);
         rowKinds.fill("data");
 
         refreshAllRows();
         loadCpuFromEditor();
 
-      } else if (
-        action === "delete" &&
-        selectedInput
-      ) {
-
+      } else if (action === "delete" && selectedInput) {
         selectedInput.value = "";
 
         selectedInput.dispatchEvent(
-          new Event("change", {
-            bubbles: true
-          })
+          new Event("change", { bubbles: true })
         );
 
       } else if (action === "save") {
-
         try {
-
           localStorage.setItem(
             "sap1-saved-program",
-            JSON.stringify({
-              bytes,
-              rowKinds
-            })
+            JSON.stringify({ bytes, rowKinds })
           );
 
           setStatus("SAVED");
 
         } catch {
-
-          showError(
-            "Unable to save program in this browser"
-          );
+          showError("Unable to save program in this browser");
         }
       }
     };
 
 
     // ========================================================
-    // ADDED UI 8: ACTION BUTTON LISTENERS
+    // ADDED UI 8: BUTTON EVENT LISTENERS
     // ========================================================
 
     document
       .querySelectorAll("button[data-action]")
       .forEach(button => {
-
         button.addEventListener("click", () => {
           handleAction(button.dataset.action);
         });
       });
 
-
-    // ========================================================
-    // ADDED UI 8: SPEED BUTTONS
-    // ========================================================
-
     document
       .querySelectorAll("button[data-speed]")
       .forEach(button => {
-
         button.addEventListener("click", () => {
-
           runner.setSpeed(
-            Math.max(
-              1,
-              Number(button.dataset.speed)
-            )
+            Math.max(1, Number(button.dataset.speed))
           );
 
           document
-            .querySelectorAll(
-              "button[data-speed]"
-            )
+            .querySelectorAll("button[data-speed]")
             .forEach(item => {
-
               item.classList.toggle(
                 "active",
                 item === button
@@ -1527,36 +1355,18 @@ if (typeof document !== "undefined") {
         });
       });
 
-
-    // ========================================================
-    // ADDED UI 8: PROGRAM PRESET BUTTONS
-    // ========================================================
-
     document
       .querySelectorAll("button[data-program]")
       .forEach(button => {
-
         button.addEventListener("click", () => {
-
-          preset(
-            Number(button.dataset.program)
-          );
+          preset(Number(button.dataset.program));
         });
       });
 
-
-    // ========================================================
-    // ADDED UI 8: INSTRUCTION KEYPAD
-    // ========================================================
-
     document
-      .querySelectorAll(
-        "button[data-instruction]"
-      )
+      .querySelectorAll("button[data-instruction]")
       .forEach(button => {
-
         button.addEventListener("click", () => {
-
           if (
             !selectedInput ||
             !selectedInput.id.startsWith("Asm_")
@@ -1564,8 +1374,7 @@ if (typeof document !== "undefined") {
             selectedInput = cell("Asm", 0);
           }
 
-          const mnemonic =
-            button.dataset.instruction;
+          const mnemonic = button.dataset.instruction;
 
           selectedInput.value =
             ["OUT", "HLT"].includes(mnemonic)
@@ -1573,41 +1382,27 @@ if (typeof document !== "undefined") {
               : `${mnemonic} 0H`;
 
           selectedInput.dispatchEvent(
-            new Event("change", {
-              bubbles: true
-            })
+            new Event("change", { bubbles: true })
           );
 
           selectedInput.focus();
         });
       });
 
-
-    // ========================================================
-    // ADDED UI 8: HEXADECIMAL KEYPAD
-    // ========================================================
-
     document
       .querySelectorAll("button[data-hex]")
       .forEach(button => {
-
         button.addEventListener("click", () => {
-
           if (!selectedInput) return;
 
-          const digit =
-            button.dataset.hex;
-
-          const previous =
-            selectedInput.value;
+          const digit = button.dataset.hex;
+          const previous = selectedInput.value;
 
           const start =
-            selectedInput.selectionStart ??
-            previous.length;
+            selectedInput.selectionStart ?? previous.length;
 
           const end =
-            selectedInput.selectionEnd ??
-            previous.length;
+            selectedInput.selectionEnd ?? previous.length;
 
           selectedInput.value =
             previous.slice(0, start) +
@@ -1620,8 +1415,6 @@ if (typeof document !== "undefined") {
             start + 1,
             start + 1
           );
-
-          // Validate after the user commits the input.
         });
       });
 
@@ -1631,11 +1424,9 @@ if (typeof document !== "undefined") {
     // ========================================================
 
     cpu.onChange = renderSnapshot;
-
     cpu.loadMemory(bytes);
 
     renderSnapshot(cpu.getSnapshot());
-
     clearExecutionLog();
 
     setStatus("READY");
