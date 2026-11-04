@@ -10,16 +10,25 @@ fetch–decode–execute cycle one clock pulse (T-state) at a time.
 No dependencies and no build step.
 
 1. Download or clone the repository.
-2. Open `sap.html` in any modern browser (Chrome, Edge, Firefox).
+2. Open `frontend/index.html` in any modern browser (Chrome, Edge, Firefox).
 
-Optional, to serve it over HTTP: `npx serve .` or `python -m http.server 8000`, then open http://localhost:3000.
+Optional, to serve it over HTTP, run it from inside the `frontend` folder: `cd frontend`, then `npx serve .` or `python -m http.server 8000`, and open http://localhost:8000.
+
+## Deploy (Vercel)
+
+The site is static, so there is no build step.
+
+1. Import the repository in Vercel.
+2. Set **Root Directory** to `frontend`.
+3. Set **Framework Preset** to **Other** and leave Build Command and Output Directory empty.
+4. Deploy. Vercel serves `index.html` as the home page, and every push to `main` redeploys automatically.
 
 ## Language and framework
 
 **Plain HTML, CSS and JavaScript, no framework.**
 
 - The machine is small (16 bytes of RAM, 5 instructions), so a framework would add setup without adding clarity.
-- `sap.js` has three layers: the `SAP1` class (CPU logic, no DOM access), an assembler/memory builder (`assembleLine`, `buildMemory`), and a UI layer that only draws the CPU state and handles clicks.
+- `script.js` has three layers: the `SAP1` class (CPU logic, no DOM access), an assembler/memory builder (`assembleLine`, `buildMemory`), and a UI layer that only draws the CPU state and handles clicks.
 - Nothing to install, so it runs on any lab computer.
 - The logic is also exported with `module.exports`, so it can be tested in Node without a browser.
 
@@ -114,10 +123,12 @@ The default program on page load is PROG 1: `LDA 9H`, `ADD AH`, `SUB BH`, `OUT`,
 ## Files
 
 ```
-sap.html   page structure
-sap.css    layout and look
-sap.js     SAP1 class, runner, assembler and UI
+frontend/
+  index.html   page structure
+  style.css    layout and look
+  script.js    SAP1 class, runner, assembler and UI
 README.md
+.gitattributes
 ```
 
 ## Group members
