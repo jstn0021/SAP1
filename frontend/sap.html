@@ -80,7 +80,24 @@
                 <thead>
                     <tr><th>ADDRESS</th><th>INSTRUCTION</th></tr>
                 </thead>
-                <tbody id="asm-table"></tbody>
+                <tbody id="asm-table">
+                    <tr><td>0H</td><td><input id="Asm_0h" value="LDA 9H"></td></tr>
+                    <tr><td>1H</td><td><input id="Asm_1h" value="ADD AH"></td></tr>
+                    <tr><td>2H</td><td><input id="Asm_2h" value="SUB BH"></td></tr>
+                    <tr><td>3H</td><td><input id="Asm_3h" value="OUT"></td></tr>
+                    <tr><td>4H</td><td><input id="Asm_4h" value="HLT"></td></tr>
+                    <tr><td>5H</td><td><input id="Asm_5h"></td></tr>
+                    <tr><td>6H</td><td><input id="Asm_6h"></td></tr>
+                    <tr><td>7H</td><td><input id="Asm_7h"></td></tr>
+                    <tr><td>8H</td><td><input id="Asm_8h"></td></tr>
+                    <tr><td>9H</td><td><input id="Asm_9h" value="25H"></td></tr>
+                    <tr><td>AH</td><td><input id="Asm_ah" value="05H"></td></tr>
+                    <tr><td>BH</td><td><input id="Asm_bh" value="23H"></td></tr>
+                    <tr><td>CH</td><td><input id="Asm_ch"></td></tr>
+                    <tr><td>DH</td><td><input id="Asm_dh"></td></tr>
+                    <tr><td>EH</td><td><input id="Asm_eh"></td></tr>
+                    <tr><td>FH</td><td><input id="Asm_fh"></td></tr>
+                </tbody>
             </table>
         </div>
         <div class="notes">
@@ -100,7 +117,24 @@
                 <thead>
                     <tr><th>ADDRESS</th><th>8-BIT CODE</th></tr>
                 </thead>
-                <tbody id="code-table"></tbody>
+                <tbody id="code-table">
+                    <tr><td>0H</td><td><input id="Mc_0h" value="0000 1001"></td></tr>
+                    <tr><td>1H</td><td><input id="Mc_1h" value="0001 1010"></td></tr>
+                    <tr><td>2H</td><td><input id="Mc_2h" value="0010 1011"></td></tr>
+                    <tr><td>3H</td><td><input id="Mc_3h" value="1110 1111"></td></tr>
+                    <tr><td>4H</td><td><input id="Mc_4h" value="1111 1111"></td></tr>
+                    <tr><td>5H</td><td><input id="Mc_5h"></td></tr>
+                    <tr><td>6H</td><td><input id="Mc_6h"></td></tr>
+                    <tr><td>7H</td><td><input id="Mc_7h"></td></tr>
+                    <tr><td>8H</td><td><input id="Mc_8h"></td></tr>
+                    <tr><td>9H</td><td><input id="Mc_9h" value="0010 0101"></td></tr>
+                    <tr><td>AH</td><td><input id="Mc_ah" value="0000 0101"></td></tr>
+                    <tr><td>BH</td><td><input id="Mc_bh" value="0010 0011"></td></tr>
+                    <tr><td>CH</td><td><input id="Mc_ch"></td></tr>
+                    <tr><td>DH</td><td><input id="Mc_dh"></td></tr>
+                    <tr><td>EH</td><td><input id="Mc_eh"></td></tr>
+                    <tr><td>FH</td><td><input id="Mc_fh"></td></tr>
+                </tbody>
             </table>
         </div>
         <div class="notes">
@@ -118,7 +152,24 @@
                 <thead>
                     <tr><th>ADDRESS</th><th>DATA (8-BIT)</th></tr>
                 </thead>
-                <tbody id="ram-table"></tbody>
+                    <tbody id="ram-table">
+                        <tr><td>0H</td><td><input id="Ram_0h" value="09" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>1H</td><td><input id="Ram_1h" value="1A" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>2H</td><td><input id="Ram_2h" value="2B" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>3H</td><td><input id="Ram_3h" value="EF" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>4H</td><td><input id="Ram_4h" value="FF" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>5H</td><td><input id="Ram_5h" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>6H</td><td><input id="Ram_6h" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>7H</td><td><input id="Ram_7h" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>8H</td><td><input id="Ram_8h" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>9H</td><td><input id="Ram_9h" value="25" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>AH</td><td><input id="Ram_ah" value="05" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>BH</td><td><input id="Ram_bh" value="23" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>CH</td><td><input id="Ram_ch" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>DH</td><td><input id="Ram_dh" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>EH</td><td><input id="Ram_eh" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                        <tr><td>FH</td><td><input id="Ram_fh" value="00" pattern="[0-9A-Fa-f]{2}" title="Enter two hexadecimal digits"></td></tr>
+                    </tbody>
             </table>
         </div>
         <div class="notes">
@@ -187,9 +238,56 @@
                 <b id="ir-value">00</b>
             </div>
 
+            <!-- OUTPUT REGISTER -->
+            <div class="signal" data-register="out">
+
+                <span>OUTPUT REGISTER</span>
+
+                <div class="bits" id="out-bits">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+
+                <b id="out-value">00</b>
+
+            </div>
+
             <div class="signal" data-register="control">
                 <span>TIME / CONTROL</span>
                 <b id="control-value">T0</b>
+            </div>
+
+        </div>
+
+        <!-- CONTROLLER-SEQUENCER DETAILS -->
+        <div class="controller-details">
+
+            <h3>CONTROLLER-SEQUENCER</h3>
+
+            <div class="controller-row">
+                <span>OPCODE</span>
+                <strong id="opcode-value">----</strong>
+            </div>
+
+            <div class="controller-row">
+                <span>OPERAND</span>
+                <strong id="operand-value">----</strong>
+            </div>
+
+            <div class="controller-row">
+                <span>EXECUTION PHASE</span>
+                <strong id="phase-value">IDLE</strong>
+            </div>
+
+            <div class="controller-row">
+                <span>HALTED</span>
+                <strong id="halted-value">NO</strong>
             </div>
 
         </div>
@@ -209,6 +307,170 @@
     </section>
 
 </main>
+
+
+    <!-- ADDITIONAL SAP-1 MONITORING PANELS -->
+    <div class="extensions">
+
+        <!-- W-BUS VISUALIZATION -->
+        <section class="extension-panel bus-visual">
+
+            <h2>8-BIT W-BUS VISUALIZATION</h2>
+
+            <p class="extension-description">
+                Shared data bus and register transfer monitoring
+            </p>
+
+            <div class="bus-board">
+
+                <div class="bus-components">
+
+                    <div class="bus-node" id="wire-pc">
+                        <strong>PC</strong>
+                        <small>0000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-mar">
+                        <strong>MAR</strong>
+                        <small>0000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-ram">
+                        <strong>RAM</strong>
+                        <small>00000000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-ir">
+                        <strong>IR</strong>
+                        <small>00000000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-a">
+                        <strong>A</strong>
+                        <small>00000000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-b">
+                        <strong>B</strong>
+                        <small>00000000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-alu">
+                        <strong>ALU</strong>
+                        <small>00000000</small>
+                    </div>
+
+                    <div class="bus-node" id="wire-out">
+                        <strong>OUT</strong>
+                        <small>00000000</small>
+                    </div>
+
+                </div>
+
+                <!-- MAIN SHARED BUS -->
+                <div class="bus-backbone" id="bus-backbone">
+                    <span>8-BIT W-BUS</span>
+                </div>
+
+            </div>
+
+            <!-- ACTIVE TRANSFER INFORMATION -->
+            <div class="transfer-monitor">
+
+                <div class="transfer-item">
+                    <span>SOURCE</span>
+                    <strong id="bus-source">---</strong>
+                </div>
+
+                <span class="transfer-arrow">→</span>
+
+                <div class="transfer-item">
+                    <span>DATA</span>
+                    <strong id="bus-data">00000000</strong>
+                </div>
+
+                <span class="transfer-arrow">→</span>
+
+                <div class="transfer-item">
+                    <span>DESTINATION</span>
+                    <strong id="bus-destination">---</strong>
+                </div>
+
+            </div>
+
+            <p class="bus-message" id="bus-transfer-message">
+                No active transfer
+            </p>
+
+            <div class="bus-legend">
+                <span><i class="legend-source"></i> Source</span>
+                <span><i class="legend-destination"></i> Destination</span>
+                <span><i class="legend-inactive"></i> Inactive</span>
+            </div>
+
+        </section>
+
+        <!-- EXECUTION LOG -->
+        <section class="extension-panel">
+
+            <h2>INSTRUCTION EXECUTION LOG</h2>
+
+            <div class="log-container">
+
+                <ol id="execution-log"></ol>
+
+                <p id="log-placeholder">
+                    No instructions executed yet.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- ERROR AND VALIDATION PANEL -->
+        <section class="extension-panel">
+
+            <h2>ERRORS & VALIDATION</h2>
+
+            <!-- DEFAULT STATUS -->
+            <div class="validation-status" id="validation-status">
+                <span class="status-indicator"></span>
+                No errors detected
+            </div>
+
+            <!-- ERROR MESSAGE -->
+            <div
+                class="error-box"
+                id="error-box"
+                role="alert"
+                hidden
+            >
+                <strong id="error-title">
+                    Invalid Input
+                </strong>
+
+                <p id="error-message">
+                    Please check the entered value.
+                </p>
+            </div>
+
+            <div class="validation-guide">
+
+                <h3>INPUT RULES</h3>
+
+                <ul>
+                    <li>RAM addresses: 0H to FH</li>
+                    <li>8-bit values: 00H to FFH</li>
+                    <li>Binary machine code: 8 bits</li>
+                    <li>Supported: LDA, ADD, SUB, OUT, HLT</li>
+                </ul>
+
+            </div>
+
+        </section>
+
+    </div>
+
 
 <script src="sap.js"></script>
 </body>
