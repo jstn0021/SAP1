@@ -64,7 +64,7 @@
         </div>
 
         <p class="keypad-help">
-          Select an input field before using the hexadecimal keys.
+          Select an Assembly field to enter instructions or hexadecimal data.
         </p>
       </section>
 
@@ -168,70 +168,70 @@
               </tr>
             </thead>
             <tbody id="code-table">
-              <tr>
-                <td>0H</td>
-                <td><input id="Mc_0h" value="0000 1001" /></td>
-              </tr>
-              <tr>
-                <td>1H</td>
-                <td><input id="Mc_1h" value="0001 1010" /></td>
-              </tr>
-              <tr>
-                <td>2H</td>
-                <td><input id="Mc_2h" value="0010 1011" /></td>
-              </tr>
-              <tr>
-                <td>3H</td>
-                <td><input id="Mc_3h" value="1110 1111" /></td>
-              </tr>
-              <tr>
-                <td>4H</td>
-                <td><input id="Mc_4h" value="1111 1111" /></td>
-              </tr>
-              <tr>
-                <td>5H</td>
-                <td><input id="Mc_5h" /></td>
-              </tr>
-              <tr>
-                <td>6H</td>
-                <td><input id="Mc_6h" /></td>
-              </tr>
-              <tr>
-                <td>7H</td>
-                <td><input id="Mc_7h" /></td>
-              </tr>
-              <tr>
-                <td>8H</td>
-                <td><input id="Mc_8h" /></td>
-              </tr>
-              <tr>
-                <td>9H</td>
-                <td><input id="Mc_9h" value="0010 0101" /></td>
-              </tr>
-              <tr>
-                <td>AH</td>
-                <td><input id="Mc_ah" value="0000 0101" /></td>
-              </tr>
-              <tr>
-                <td>BH</td>
-                <td><input id="Mc_bh" value="0010 0011" /></td>
-              </tr>
-              <tr>
-                <td>CH</td>
-                <td><input id="Mc_ch" /></td>
-              </tr>
-              <tr>
-                <td>DH</td>
-                <td><input id="Mc_dh" /></td>
-              </tr>
-              <tr>
-                <td>EH</td>
-                <td><input id="Mc_eh" /></td>
-              </tr>
-              <tr>
-                <td>FH</td>
-                <td><input id="Mc_fh" /></td>
-              </tr>
+                <tr>
+                    <td>0H</td>
+                    <td><input id="Mc_0h" value="0000 1001" readonly /></td>
+                </tr>
+                <tr>
+                    <td>1H</td>
+                    <td><input id="Mc_1h" value="0001 1010" readonly /></td>
+                </tr>
+                <tr>
+                    <td>2H</td>
+                    <td><input id="Mc_2h" value="0010 1011" readonly /></td>
+                </tr>
+                <tr>
+                    <td>3H</td>
+                    <td><input id="Mc_3h" value="1110 1111" readonly /></td>
+                </tr>
+                <tr>
+                    <td>4H</td>
+                    <td><input id="Mc_4h" value="1111 1111" readonly /></td>
+                </tr>
+                <tr>
+                    <td>5H</td>
+                    <td><input id="Mc_5h" readonly /></td>
+                </tr>
+                <tr>
+                    <td>6H</td>
+                    <td><input id="Mc_6h" readonly /></td>
+                </tr>
+                <tr>
+                    <td>7H</td>
+                    <td><input id="Mc_7h" readonly /></td>
+                </tr>
+                <tr>
+                    <td>8H</td>
+                    <td><input id="Mc_8h" readonly /></td>
+                </tr>
+                <tr>
+                    <td>9H</td>
+                    <td><input id="Mc_9h" value="0010 0101" readonly /></td>
+                </tr>
+                <tr>
+                    <td>AH</td>
+                    <td><input id="Mc_ah" value="0000 0101" readonly /></td>
+                </tr>
+                <tr>
+                    <td>BH</td>
+                    <td><input id="Mc_bh" value="0010 0011" readonly /></td>
+                </tr>
+                <tr>
+                    <td>CH</td>
+                    <td><input id="Mc_ch" readonly /></td>
+                </tr>
+                <tr>
+                    <td>DH</td>
+                    <td><input id="Mc_dh" readonly /></td>
+                </tr>
+                <tr>
+                    <td>EH</td>
+                    <td><input id="Mc_eh" readonly /></td>
+                </tr>
+                <tr>
+                    <td>FH</td>
+                    <td><input id="Mc_fh" readonly /></td>
+                </tr>
             </tbody>
           </table>
         </div>
@@ -255,182 +255,70 @@
             </thead>
             <tbody id="ram-table">
               <tr>
-                <td>0H</td>
-                <td>
-                  <input
-                    id="Ram_0h"
-                    value="09"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>0H</td>
+                  <td><input id="Ram_0h" value="09" readonly /></td>
               </tr>
               <tr>
-                <td>1H</td>
-                <td>
-                  <input
-                    id="Ram_1h"
-                    value="1A"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>1H</td>
+                  <td><input id="Ram_1h" value="1A" readonly /></td>
               </tr>
               <tr>
-                <td>2H</td>
-                <td>
-                  <input
-                    id="Ram_2h"
-                    value="2B"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>2H</td>
+                  <td><input id="Ram_2h" value="2B" readonly /></td>
               </tr>
               <tr>
-                <td>3H</td>
-                <td>
-                  <input
-                    id="Ram_3h"
-                    value="EF"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>3H</td>
+                  <td><input id="Ram_3h" value="EF" readonly /></td>
               </tr>
               <tr>
-                <td>4H</td>
-                <td>
-                  <input
-                    id="Ram_4h"
-                    value="FF"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>4H</td>
+                  <td><input id="Ram_4h" value="FF" readonly /></td>
               </tr>
               <tr>
-                <td>5H</td>
-                <td>
-                  <input
-                    id="Ram_5h"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>5H</td>
+                  <td><input id="Ram_5h" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>6H</td>
-                <td>
-                  <input
-                    id="Ram_6h"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>6H</td>
+                  <td><input id="Ram_6h" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>7H</td>
-                <td>
-                  <input
-                    id="Ram_7h"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>7H</td>
+                  <td><input id="Ram_7h" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>8H</td>
-                <td>
-                  <input
-                    id="Ram_8h"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>8H</td>
+                  <td><input id="Ram_8h" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>9H</td>
-                <td>
-                  <input
-                    id="Ram_9h"
-                    value="25"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>9H</td>
+                  <td><input id="Ram_9h" value="25" readonly /></td>
               </tr>
               <tr>
-                <td>AH</td>
-                <td>
-                  <input
-                    id="Ram_ah"
-                    value="05"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>AH</td>
+                  <td><input id="Ram_ah" value="05" readonly /></td>
               </tr>
               <tr>
-                <td>BH</td>
-                <td>
-                  <input
-                    id="Ram_bh"
-                    value="23"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>BH</td>
+                  <td><input id="Ram_bh" value="23" readonly /></td>
               </tr>
               <tr>
-                <td>CH</td>
-                <td>
-                  <input
-                    id="Ram_ch"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>CH</td>
+                  <td><input id="Ram_ch" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>DH</td>
-                <td>
-                  <input
-                    id="Ram_dh"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>DH</td>
+                  <td><input id="Ram_dh" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>EH</td>
-                <td>
-                  <input
-                    id="Ram_eh"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>EH</td>
+                  <td><input id="Ram_eh" value="00" readonly /></td>
               </tr>
               <tr>
-                <td>FH</td>
-                <td>
-                  <input
-                    id="Ram_fh"
-                    value="00"
-                    pattern="[0-9A-Fa-f]{2}"
-                    title="Enter two hexadecimal digits"
-                  />
-                </td>
+                  <td>FH</td>
+                  <td><input id="Ram_fh" value="00" readonly /></td>
               </tr>
-            </tbody>
+          </tbody>
           </table>
         </div>
         <div class="notes">

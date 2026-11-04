@@ -273,6 +273,47 @@ td input:focus {
   border-bottom: 1px solid #174e52;
 }
 
+/* ASSEMBLY AND MACHINE CODE - READ ONLY */
+
+#code-table input[readonly] {
+    background: #d4d5d0;
+    color: #303c3a;
+    cursor: default;
+}
+#code-table input[readonly]:focus {
+    background: #d4d5d0;
+    border-bottom: none;
+}
+
+/* ASSEMBLY - EDITABLE */
+
+#asm-table input {
+    background: #f4f8f6;
+    color: #171b1b;
+    cursor: text;
+}
+
+#asm-table input:focus {
+    background: #ffffff;
+    border-bottom: 2px solid #174e52;
+}
+
+
+/* MACHINE CODE AND RAM - READ ONLY */
+
+#code-table input[readonly],
+#ram-table input[readonly] {
+    background: #d4d5d0;
+    color: #303c3a;
+    cursor: default;
+}
+
+#code-table input[readonly]:focus,
+#ram-table input[readonly]:focus {
+    background: #d4d5d0;
+    border-bottom: none;
+}
+
 td input.invalid,
 td input:invalid {
   background: #ffd2d0;
