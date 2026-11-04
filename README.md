@@ -2,8 +2,9 @@
 
 A browser-based simulator of the SAP-1 (Simple-As-Possible 1) computer for
 Computer Architecture and Organization. It shows the registers, the W-bus,
-the controller-sequencer and the output display, and it runs the
-fetch–decode–execute cycle one clock pulse (T-state) at a time.
+the controller-sequencer and the output display. It runs the
+fetch–decode–execute cycle one clock pulse (T-state) at a time with RUN, or
+one complete instruction at a time with STEP.
 
 ## Run it
 
@@ -41,7 +42,7 @@ The site is static, so there is no build step.
 | Controller-sequencer       | T1–T6 ring counter, control signals (Ep, Lm, Cp, CE, Li, Ei, Ea, Lo, La, Lb, Eu, Su, HLT), opcode, operand, phase (FETCH/EXECUTE) and halted flag |
 | Instruction set            | LDA `0000`, ADD `0001`, SUB `0010`, OUT `1110`, HLT `1111`                                                                                        |
 | Register panels            | PC, MAR, IR, A, B, ALU/SUM, OUT and W-bus, each shown as LEDs plus a hex value                                                                    |
-| Output display             | Three-digit decimal display of the output register, plus 8 output LEDs                                                                            |
+| Output display             | Three-digit hexadecimal display of the output register (no `H` suffix, for example `007`), plus 8 output LEDs                                     |
 | W-bus visualization        | Every node's current value, the active source (orange) and destination (green), and a source → data → destination readout                         |
 | Three synchronized editors | ASM, machine code (binary or hex) and RAM. Editing one updates the other two                                                                      |
 | Execution log              | One line per completed instruction: address, mnemonic, A and OUT                                                                                  |
@@ -52,12 +53,12 @@ The site is static, so there is no build step.
 
 **Transport (monitor panel)**
 
-| Button | Action                                                             |
-| ------ | ------------------------------------------------------------------ |
-| STEP   | Advance one clock pulse (one T-state)                              |
-| RUN    | Run automatically until HLT, STOP, or the 10,000-tick safety limit |
-| STOP   | Pause a running program                                            |
-| RESET  | Clear registers and the log, keep the loaded program               |
+| Button | Action                                                                                                  |
+| ------ | ------------------------------------------------------------------------------------------------------- |
+| STEP   | Execute one complete instruction (T1 through T6)                                                        |
+| RUN    | Run automatically, one clock pulse (T-state) per tick, until HLT, STOP, or the 10,000-tick safety limit |
+| STOP   | Pause a running program                                                                                 |
+| RESET  | Clear registers and the log, keep the loaded program                                                    |
 
 **Keypad**
 
@@ -108,9 +109,9 @@ After T6 the ring counter returns to T1 for the next instruction.
 | Key    | Program           | Result                                      |
 | ------ | ----------------- | ------------------------------------------- |
 | PROG 1 | `25H + 05H − 23H` | `07H` (shows 007)                           |
-| PROG 2 | `21H − 02H + 0AH` | `29H` (shows 041)                           |
+| PROG 2 | `21H − 02H + 0AH` | `29H` (shows 029)                           |
 | PROG 3 | `FFH + 02H`       | `01H` (overflow wraps, shows 001)           |
-| PROG 4 | `03H − 05H`       | `FEH` (negative, 2's complement, shows 254) |
+| PROG 4 | `03H − 05H`       | `FEH` (negative, 2's complement, shows 0FE) |
 
 The default program on page load is PROG 1: `LDA 9H`, `ADD AH`, `SUB BH`, `OUT`, `HLT`, with data `25H`, `05H`, `23H` at addresses 9, A, B.
 
@@ -128,7 +129,6 @@ frontend/
   style.css    layout and look
   script.js    SAP1 class, runner, assembler and UI
 README.md
-.gitattributes
 ```
 
 ## Group members
