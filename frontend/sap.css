@@ -1174,3 +1174,282 @@ td input {
             minmax(300px, 1.4fr);
     }
 }
+
+/* ==================================
+   HEXADECIMAL OUTPUT DISPLAY
+================================== */
+
+.hex-display {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr)
+        25px;
+
+    align-items: end;
+    gap: 7px;
+
+    padding: 12px;
+    background: #d0d0cb;
+    border: 3px solid #737875;
+}
+
+/* HEX DIGITS */
+
+.hex-display .hex-digit {
+    display: grid;
+    place-items: center;
+
+    min-width: 0;
+    min-height: 105px;
+
+    background: #090d0e;
+    color: #ff1717;
+
+    font-family: monospace;
+    font-size: clamp(52px, 5vw, 84px);
+    font-weight: bold;
+    font-style: italic;
+
+    text-shadow: 0 0 12px red;
+}
+
+/* HEXADECIMAL SUFFIX */
+
+.hex-display .hex-suffix {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    min-height: 105px;
+    padding-bottom: 10px;
+
+    background: transparent;
+    color: #b91c1c;
+
+    font-family: monospace;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    text-shadow: none;
+}
+
+/* DISPLAY LABEL */
+
+.display-label {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+
+/* ==================================
+   THREE-DIGIT HEX OUTPUT
+================================== */
+
+.digital-display.hex-display {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr))
+        25px;
+
+    align-items: end;
+    gap: 5px;
+
+    padding: 10px;
+    background: #d0d0cb;
+    border: 3px solid #737875;
+}
+
+/* THREE HEX DIGITS */
+
+.hex-display #display-2,
+.hex-display #display-1,
+.hex-display #display-0 {
+    display: grid;
+    place-items: center;
+
+    min-width: 0;
+    min-height: 100px;
+
+    background: #090d0e;
+    color: #ff1717;
+
+    font-family: monospace;
+    font-size: clamp(38px, 4.5vw, 65px);
+    font-weight: bold;
+    font-style: italic;
+
+    text-shadow: 0 0 10px red;
+}
+
+/* HEX SUFFIX */
+
+.hex-display .hex-suffix {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    min-height: 100px;
+    padding-bottom: 10px;
+
+    background: transparent;
+    color: #b91c1c;
+
+    font-family: monospace;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    text-shadow: none;
+}
+
+/* ==================================
+   OUTPUT LEDs - 4 + 4 GROUPING
+================================== */
+
+.signal[data-register="out"] {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: right;
+    gap: 8px;
+    padding: 10px;
+}
+
+/* OUTPUT LABEL */
+
+.signal[data-register="out"] span {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+/* HEX OUTPUT VALUE */
+
+.signal[data-register="out"] b {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+/* LED CONTAINER */
+
+#out-bits {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 4 + 4 LED SEPARATION */
+
+#out-bits i:nth-child(4) {
+    margin-right: 18px;
+}
+
+/* LED SIZE */
+
+#out-bits i {
+    display: block;
+    flex-shrink: 0;
+
+    width: 12px;
+    height: 15px;
+
+    background: #252a29;
+    border-radius: 2px;
+}
+
+/* LED ON */
+
+#out-bits i.lit {
+    background: #ff1717;
+    box-shadow: 0 0 6px red;
+}
+
+/* ==================================
+   W-BUS BINARY SPACING
+================================== */
+
+#bus-data {
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    white-space: pre;
+}
+
+/* BINARY VALUES IN BUS NODES */
+
+.bus-node small {
+    font-family: monospace;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    white-space: pre;
+}
+
+/* OUTPUT LEDs - RIGHT SIDE */
+
+.signal[data-register="out"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 5px;
+
+    min-height: 40px;
+    padding: 6px;
+}
+
+/* LABEL - LEFT */
+
+.signal[data-register="out"] span {
+    grid-column: 1;
+    grid-row: 1;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* LEDS - RIGHT */
+
+#out-bits {
+    grid-column: 2;
+    grid-row: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* SEPARATE FIRST 4 AND LAST 4 */
+
+#out-bits i:nth-child(4) {
+    margin-right: 10px;
+}
+
+/* LED SIZE */
+
+#out-bits i {
+    width: 8px;
+    height: 11px;
+    flex-shrink: 0;
+
+    background: #252a29;
+    border-radius: 2px;
+}
+
+#out-bits i.lit {
+    background: red;
+    box-shadow: 0 0 5px red;
+}
+
+/* HEX VALUE - FAR RIGHT */
+
+.signal[data-register="out"] b {
+    grid-column: 3;
+    grid-row: 1;
+
+    font-size: 13px;
+    text-align: right;
+}

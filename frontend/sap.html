@@ -182,11 +182,20 @@
     <!-- MONITOR -->
     <section class="monitor panel">
 
-        <div class="display-label">OUTPUT REGISTER</div>
-        <div class="digital-display">
-            <span id="display-2">0</span>
-            <span id="display-1">0</span>
-            <span id="display-0">0</span>
+        <div class="display-label">
+            HEXADECIMAL OUTPUT
+        </div>
+                <!-- 8-BIT HEXADECIMAL OUTPUT -->
+        <div class="digital-display hex-display">
+
+            <span class="hex-digit" id="hex-high">0</span>
+
+            <span class="hex-digit" id="hex-low">0</span>
+
+            <span class="hex-digit" id="hex-low">0</span>
+
+            <span class="hex-suffix">H</span>
+
         </div>
 
         <div class="status-panel">
@@ -337,32 +346,32 @@
 
                     <div class="bus-node" id="wire-ram">
                         <strong>RAM</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                     <div class="bus-node" id="wire-ir">
                         <strong>IR</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                     <div class="bus-node" id="wire-a">
                         <strong>A</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                     <div class="bus-node" id="wire-b">
                         <strong>B</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                     <div class="bus-node" id="wire-alu">
                         <strong>ALU</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                     <div class="bus-node" id="wire-out">
                         <strong>OUT</strong>
-                        <small>00000000</small>
+                        <small>0000 0000</small>
                     </div>
 
                 </div>
@@ -386,7 +395,7 @@
 
                 <div class="transfer-item">
                     <span>DATA</span>
-                    <strong id="bus-data">00000000</strong>
+                    <strong id="bus-data">0000 0000</strong>
                 </div>
 
                 <span class="transfer-arrow">→</span>
