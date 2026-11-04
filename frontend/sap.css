@@ -1453,3 +1453,173 @@ td input {
     font-size: 13px;
     text-align: right;
 }
+
+/* =========================================
+   FINAL RESPONSIVE FIX
+   SAP-1 SIMULATOR
+========================================= */
+
+/* PREVENT OVERFLOW */
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* MAIN CONTAINER */
+.computer {
+    width: 100%;
+    min-width: 0;
+}
+
+/* PANELS */
+.panel,
+.monitor,
+.table-panel {
+    min-width: 0;
+}
+
+/* RESPONSIVE TABLES */
+.table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* RESPONSIVE INPUTS */
+input {
+    max-width: 100%;
+}
+
+/* TABLET */
+@media (min-width: 701px) and (max-width: 1249px) {
+
+    .computer {
+        grid-template-columns:
+            minmax(150px, 0.8fr)
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .table-panel {
+        min-width: 0;
+        margin-left: 0;
+    }
+
+    .table-panel + .table-panel {
+        margin-left: 0;
+    }
+
+    .monitor {
+        grid-column: 2 / 4;
+        grid-row: auto;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+
+    .computer {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .brand,
+    .keypad {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .table-panel {
+        grid-column: auto;
+        grid-row: auto;
+        min-height: 400px;
+        margin-left: 0;
+    }
+
+    .table-panel + .table-panel {
+        margin-left: 0;
+    }
+
+    .ram-panel,
+    .monitor {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
+
+    .table-panel h2 {
+        font-size: 16px;
+    }
+
+    table,
+    td,
+    td input {
+        font-size: 12px;
+    }
+
+    th {
+        font-size: 11px;
+    }
+
+    .extensions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 430px) {
+
+    .computer {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 8px;
+    }
+
+    .brand,
+    .keypad,
+    .table-panel,
+    .ram-panel,
+    .monitor {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .table-panel {
+        min-height: 350px;
+    }
+
+    .keypad button {
+        font-size: 13px;
+    }
+
+    .hex-keys button {
+        font-size: 20px;
+    }
+
+    .utility-keys button {
+        font-size: 11px;
+    }
+
+    .monitor .register-list {
+        grid-template-columns: 1fr;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+}
